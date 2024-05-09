@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcador de Tenis</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+<div class="container">
+  <header>
+    <h1>Marcador de Tenis</h1>
+  </header>
+  
+  
+   <!--Etapa de configuración -->
+  <div id="configuracion">
+    <h2>Configuración</h2>
+    <form id="configForm">
+      <label for="player1">Nombre del Jugador 1:</label>
+      <input type="text" id="player1" required>
+      <label for="player2">Nombre del Jugador 2:</label>
+      <input type="text" id="player2" required>
+      <button type="submit">Empezar el juego</button>
+    </form>
+  </div>
+  
+  <!--Etapa de juego!-->
+  <div id="juego" style="display: none;">
+    <h2>Juego</h2>
+    <div id="players">
+      <div id="player1Name"></div>
+      <div id="player2Name"></div>
+    </div>
+    <div id="scoreboard">
+      <div id="player1Score">0</div>
+      <div id="player2Score">0</div>
+    </div>
+    <button id="puntoJugador1">Punto para Jugador 1</button>
+    <button id="puntoJugador2" class="boton2">Punto para Jugador 2</button>
+    <div id="ganador"></div>
+  </div>
+</div>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+  const configForm = document.getElementById('configForm');
+  const juegoDiv = document.getElementById('juego');
+  const player1NameDiv = document.getElementById('player1Name');
+  const player2NameDiv = document.getElementById('player2Name');
+  const player1ScoreDiv = document.getElementById('player1Score');
+  const player2ScoreDiv = document.getElementById('player2Score');
+  const puntoJugador1Btn = document.getElementById('puntoJugador1');
+  const puntoJugador2Btn = document.getElementById('puntoJugador2');
+  const ganadorDiv = document.getElementById('ganador');
+
+  let player1Score = 0;
+  let player2Score = 0;
+
+  configForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const player1Name = document.getElementById('player1').value;
+    const player2Name = document.getElementById('player2').value;
+    player1NameDiv.textContent = player1Name;
+    player2NameDiv.textContent = player2Name;
+    juegoDiv.style.display = 'block';
+  });
+
+  puntoJugador1Btn.addEventListener('click', function() {
+    player1Score++;
+    updateScore();
+  });
+
+  puntoJugador2Btn.addEventListener('click', function() {
+    player2Score++;
+    updateScore();
+  });
+
+  function updateScore() {
+    player1ScoreDiv.textContent = getScore(player1Score);
+    player2ScoreDiv.textContent = getScore(player2Score);
+    checkWinner();
+  }
+
+  function getScore(score) {
+    switch (score) {
+      case 0:
+        return '0';
+      case 1:
+        return '15';
+      case 2:
+        return '30';
+      case 3:
+        return '40';
+        case 4:
+          return '45';
+      default:
+        return '';
+    }
+  }
+
+  function checkWinner() {
+    if (player1Score >= 4 && player1Score - player2Score >= 2) {
+      ganadorDiv.textContent = player1NameDiv.textContent + ' gana el juego!';
+      disableButtons();
+    } else if (player2Score >= 4 && player2Score - player1Score >= 2) {
+      ganadorDiv.textContent = player2NameDiv.textContent + ' gana el juego!';
+      disableButtons();
+    } else if (player1Score === 3 && player2Score === 3) {
+      ganadorDiv.textContent = 'Empate';
+    } else if (player1Score === 4 && player2Score === 3) {
+      ganadorDiv.textContent = 'Ventaja ' + player1NameDiv.textContent;
+    } else if (player2Score === 4 && player1Score === 3) {
+      ganadorDiv.textContent = 'Ventaja ' + player2NameDiv.textContent;
+    } else {
+      ganadorDiv.textContent = '';
+    }
+  }
+
+  function disableButtons() {
+    puntoJugador1Btn.disabled = true;
+    puntoJugador2Btn.disabled = true;
+  }
+});
+
+</script>
+</body>
+</html>
+
+
